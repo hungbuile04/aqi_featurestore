@@ -1,0 +1,14 @@
+project: aqi_project
+registry: data/registry.db
+provider: gcp
+
+offline_store:
+  type: bigquery
+  dataset: aq_data
+  project_id: iron-envelope-455716-g8
+
+online_store:
+  type: redis
+  connection_string: "redis-11719.c334.asia-southeast2-1.gce.redns.redis-cloud.com:11719,password=7kJpfxzQJlyxxCJ4aO5vVc4hzkYOgUtu"  #Dùng comma separated vì feast parse url bị lỗi
+
+entity_key_serialization_version: 3
