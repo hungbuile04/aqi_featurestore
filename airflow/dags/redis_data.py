@@ -90,6 +90,6 @@ def extract_and_load_to_redis():
         print(df)
 
         # Đẩy vào Feast Redis
-        store.write_to_online_store(feature_view_name="aqi_info", df=df)
+        store.write_to_online_store(feature_view_name="aqi_info_v1", df=df)
         print("✅ Đã cập nhật Redis thành công.")
 

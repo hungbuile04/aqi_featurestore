@@ -64,7 +64,7 @@ def get_aqi_from_city_name(query: str) -> str:
 
     try:
         store = FeatureStore(repo_path="/Users/buihung/VT/project1/feast")
-        features = ["aqi_info:aqi", "aqi_info:hour", "aqi_info:day", "aqi_info:dayOfWeek"]
+        features = ["aqi_info_v1:aqi", "aqi_info_v1:hour", "aqi_info_v1:day", "aqi_info_v1:dayOfWeek"]
 
         if is_historical:
             return "⚠️ Truy vấn dữ liệu lịch sử chưa được hỗ trợ qua Redis. Hãy dùng BigQuery hoặc offline store."
@@ -90,15 +90,15 @@ def get_aqi_from_city_name(query: str) -> str:
         next_dow = (dow % 7) + 1 if next_hour == 0 else dow
 
         # Load đúng model theo từng thành phố
-        model = joblib.load(model_path)
+        model_loaded, metadata_loaded = joblib.load(model_path)
         input_df = pd.DataFrame([{
             "hour": next_hour,
             "day": next_day,
-            "day_of_week": next_dow,
+            "dayOfWeek": next_dow,
             "last_hour_aqi": current_aqi
         }])
 
-        predicted_aqi = model.predict(input_df)[0]
+        predicted_aqi = model_loaded.predict(input_df)[0]
 
         def level(aqi):
             if aqi <= 50: return "Tốt"

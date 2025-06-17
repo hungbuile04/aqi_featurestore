@@ -29,18 +29,6 @@ task_redis = PythonOperator(
     on_failure_callback=lambda context: print("Fetch data failed!")
 )
 
-task_fetch_data = PythonOperator(
-    task_id="fetch_air_quality_data",
-    python_callable=extract.fetch_air_quality_data,
-    dag=dag,
-    on_failure_callback=lambda context: print("Fetch data failed!")
-)
 
-task_upload_gcs = PythonOperator(
-    task_id="upload_to_gcs",
-    python_callable=load.upload_large_json_to_gcs,
-    dag=dag,
-    on_failure_callback=lambda context: print("Upload to GCS failed!")
-)
 
-task_redis >> task_fetch_data >> task_upload_gcs 
+task_redis 

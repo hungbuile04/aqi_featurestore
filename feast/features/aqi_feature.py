@@ -14,16 +14,32 @@ aqi_bq_source = BigQuerySource(
     timestamp_field="feature_timestamp",
 )
 
-aqi_feature_view = FeatureView(
-    name="aqi_info",
+aqi_feature_view_v1 = FeatureView(
+    name="aqi_info_v1",
     entities=[aqi_entity],
     ttl=timedelta(days=7),
     schema=[
-        Field(name="hour", dtype=Int32),
-        Field(name="day", dtype=Int32),
-        Field(name="dayOfWeek", dtype=Int32),
-        Field(name="aqi", dtype=Float32),
+        Field(name="hour", dtype=Int32, description="Hour of the day"),
+        Field(name="day", dtype=Int32, description="Day of the month"),
+        Field(name="dayOfWeek", dtype=Int32, description="Day of the week (0=Sunday, 6=Saturday)"),
+        Field(name="aqi", dtype=Float32, description="Air Quality Index(US) value, calculated from PM2.5 concentration"),
     ],
     source=aqi_bq_source,
     online=True,
+    tags={"owner": "ml_team", "project": "air_quality_prediction", "created_date": "2025-06-01" },
+)
+
+aqi_feature_view_v2 = FeatureView(
+    name="aqi_info_v2",
+    entities=[aqi_entity],
+    ttl=timedelta(days=7),
+    schema=[
+        Field(name="hour", dtype=Int32, description="Hour of the day"),
+        Field(name="day", dtype=Int32, description="Day of the month"),
+        Field(name="dayOfWeek", dtype=Int32, description="Day of the week (0=Sunday, 6=Saturday)"),
+        Field(name="aqi", dtype=Float32, description="Air Quality Index(EU) value, calculated from PM2.5 concentration"),
+    ],
+    source=aqi_bq_source,
+    online=True,
+    tags={"owner": "ml_team", "project": "air_quality_prediction", "created_date": "2025-06-0" },
 )
